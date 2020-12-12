@@ -1,2 +1,111 @@
 #PROYECTO 3
-#si se pudo 
+from tkinter import *
+from tkinter import ttk
+import tkinter.filedialog
+import tkinter as tk
+
+from PIL import ImageTk,Image
+from tkinter import messagebox
+
+
+#Control de acceso
+#----------------------
+
+#Una interfaz de seguridad donde pide usuario y contraseña para poder acceder
+
+#E: Un usuario y contraseña
+#S: Si la contraseña es la correcta seguir a la siguiente interfaz
+#R: La contraseña y el usuario deben de ser los correctos
+
+
+def control_acceso(): 
+    acceso=Tk()
+    acceso.title('Control de Acceso')
+    acceso.iconbitmap('seguridad.ico')
+    acceso.geometry("595x430")
+    acceso.resizable(False,False)
+    Inicia=PhotoImage(file='IMGSeguridad.png')
+    Label(acceso,image=Inicia).place(x=0 ,y=0)
+
+    #-----
+    #Botones//Labels
+    Usuario = tk.Entry(acceso) 
+    Usuario.place(x=50, y=359)
+    Contraseña = tk.Entry(acceso)
+    Contraseña.place(x=70, y=400)
+    tk.Label(acceso, text="Usuario:").place(x=0,y=359)
+    tk.Label(acceso, text="Contraseña:").place(x=0,y=400)
+
+    b1=Button(acceso,text="Ayuda",command=lambda:ayuda()) #Botón que proporciona informacion al usuario 
+    b1.place(x=530,y=359)
+
+    b2=Button(acceso,text='Listo',command=lambda:comprueba_datos())
+    b2.place(x=530,y=400)
+    #-----
+    def comprueba_datos():                      #Funcion que valida que entren datos en la interfaz
+        U=Usuario.get() #U=usuario
+        C=Contraseña.get() #C=contraseña
+        if U=="" or C=="":
+            messagebox.showinfo(message="Deben de ingresar el nombre de usuario y contraseña, no se premiten datos en blanco.")
+        else:
+            return control_Usuarios(U,C)    
+
+    acceso.mainloop()
+
+def ayuda():
+     messagebox.showinfo(message="Se encuentra en el Sistema de Acceso, para poder continuar debe de Ingresar un nombre de Usuario y contraseña que se encuentren registrados y clickear el en el botón de: Listo")
+    
+#------------------------------
+##Verificador de Contraseña y usuarios 
+#E:input(contraseña)
+#S: true o false
+#R: deben ingresar minimo un dato      
+def control_Usuarios(usuario,contraseña):
+    if aux_ControlUsuarios(usuario,contraseña)==True:
+        print('Pasa a la siguiente interfaz')
+    else:
+        messagebox.showinfo(message="El Usuario y contraseña no se encuentran registrados")
+    
+        
+
+def aux_ControlUsuarios(usuario,contraseña):   
+    matriz=doc_prueba2('Usuarios_registrados.txt')
+    res=False
+    for x in matriz:
+        if x[1]==usuario and x[2]==contraseña:
+            return True
+    return res 
+        
+
+
+#/////////
+
+def crear_matriz(lista_tiobe):
+    return matriz_aux(lista_tiobe, [])          #Funcion para crear una matriz 
+
+ 
+def matriz_aux(doc, resu):
+    if doc==[]:
+       
+        return resu
+    
+    else:
+        pos=doc[0].split(',')
+
+        return matriz_aux(doc[1:], resu + [pos])    
+
+
+def doc_prueba2(paper):
+    doc=open(paper,'r+')
+    doc_a=doc.read().split('\n')                #Funcion para crear matrices los archivos txt 
+    doc.close()
+    return crear_matriz(doc_a)
+
+def largo_lista(lista):                         #Funcion para sacar el largo de una lista 
+    if lista==[]:
+        return 0
+    else:
+        return 1+largo_lista(lista[1:])
+
+
+control_acceso()
