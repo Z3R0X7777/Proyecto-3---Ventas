@@ -75,8 +75,147 @@ def aux_ControlUsuarios(usuario,contraseña):
         if x[1]==usuario and x[2]==contraseña:
             return True
     return res 
-        
+#Pantalla principal
 
+def pantalla_principal():
+    main=Tk()  #Main=principal
+    main.title('Pantalla Principal')
+    main.iconbitmap('factura.ico')
+    main.geometry("595x430")
+    main.resizable(False,False)
+    Inicia=PhotoImage(file='principal.png')
+    Label(main,image=Inicia).place(x=0 ,y=0)
+
+    #-----
+    #Botones//Labels
+
+    b1=Button(main,text="Administración") #Botón que proporciona informacion al usuario 
+    b1.place(x=10,y=100)
+
+    b2=Button(main,text='Punto de venta')
+    b2.place(x=10,y=140)
+
+    b3=Button(main,text='Salir')
+    b3.place(x=10,y=220)
+
+    b4=Button(main,text='Ayuda')
+    b4.place(x=10,y=180)
+
+
+    
+
+
+
+    
+    main.mainloop()       
+#---------------------------
+#Categorias
+
+class Categorias:
+    total_categorias=[]
+    def __init__(self,nombre,codigo):
+        if isinstance(codigo,int):
+            self.nombre=nombre
+            self.codigo=codigo
+            Categorias.total_categorias+=[[nombre,codigo]]
+        else:
+            return 'Codigo no numerico'
+        
+    def modificar(self,codigo,newCodigo,newNombre):
+        if Categorias.total_categorias==[]:
+            return 'No hay registros para modificar'
+        else:
+            res=[]
+            verifica=False
+            for x in Categorias.total_categorias:
+                for y in x:
+                    if y==codigo:
+                        res+=[[newCodigo,newNombre]]
+                        verifica=True
+                if verifica==False:  #Verifica si no hay datos que modificar y los agrega a la clase
+                    res+=[[x]]
+                verifica=False
+            Categorias.total_categorias=res
+                                   
+                
+
+    def listar(self): #Mostrar
+        if Categorias.total_categorias==[]:
+            return 'No hay registros disponibles'
+        else:
+            for x in Categorias.total_categorias:
+                for y in x:
+                    print('Nombre:',y[0])
+                    print('Codigo:',y[1])
+                    print('\n -----------')
+            return 'Listo'
+                
+    def borrar(self,codigo): #No se puede borrar una categoria que ya se encuentre facturada
+        if buscar_coincidencias(Facturacion.facturas,codigo)==False:
+            for x in Categorias.total_categorias:
+                for y in x:
+                    if y==codigo:
+                        continue
+                    else:
+                        res+=[[x]]
+            Categorias.total_categorias=res
+            return 'Se actualizo con exito'
+            
+        else:
+            return 'Ya se encuentra facturado'
+
+
+#Facturacion
+
+class Facturacion:
+    facturas=[]
+    def __init__(self):
+        pass
+        
+#Administracion
+#----------------------
+
+#Interfaz de administracion 
+
+#E: 
+#S: 
+#R: 
+
+def interfaz_administracion():
+    global acceso
+    global admin
+    acceso.destroy()
+    admin=Tk()
+    admin.title('Sistema de Administracion')
+    admin.iconbitmap('factura.ico')
+    admin.geometry("960x540")
+    #admin.resizable(False,False)
+    Inicia=PhotoImage(file='PNTAdmin2.png')
+    Label(admin,image=Inicia).place(x=0 ,y=0)
+    
+    #Botones//Labels
+
+    b1=Button(admin,text="Provedores") 
+    b1.place(x=0,y=130)
+
+    b2=Button(admin,text='Productos')
+    b2.place(x=0,y=160)
+
+    b3=Button(admin,text="Categoria") 
+    b3.place(x=0,y=190)
+
+    b4=Button(admin,text='Clientes')
+    b4.place(x=0,y=220)
+
+    b5=Button(admin,text="Ayuda",command=lambda:PNTadmin())  #PNT==Pantalla de carga 
+    b5.place(x=0,y=359)
+
+
+    admin.mainloop()
+
+    
+def PNTadmin():
+     messagebox.showinfo(message="Bienvenido al apartado de Administracion, para poder continuar seleccione una de las opciones mostradas en la interfaz.")
 
 #/////////
 
@@ -107,5 +246,19 @@ def largo_lista(lista):                         #Funcion para sacar el largo de 
     else:
         return 1+largo_lista(lista[1:])
 
+#Busca datos iguales en una matriz
+#Entrada: Matriz donde buscar y dato a encontrar
+#Salida: True si existe y false si no hay coincidencias
+#Restriccion: Solo trabaja con matrices
+    
+def buscar_coincidencias(matriz,buscar):
+    res=False
+    for x in matriz:
+        for y in x:
+            if y==buscar:
+                res=True
+                break
+    return res
+    
 
 control_acceso()
