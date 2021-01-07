@@ -117,7 +117,7 @@ class Categorias:
         if isinstance(codigo,int):
             self.nombre=nombre
             self.codigo=codigo
-            Categorias.total_categorias+=[[nombre,codigo]]
+            Categorias.total_categorias+=[[nombre,codigo]] #Esto creo que debe ir vació por la función crear bro
         else:
             return 'Codigo no numerico'
         
@@ -163,6 +163,58 @@ class Categorias:
             
         else:
             return 'Ya se encuentra facturado'
+
+
+################################
+#INCLUSIÓN EL7/1/2021
+#Función que crea categorias
+        def crearCategoria(self):
+                name=self.nombre
+                code=self.codigo
+                if nombre=="":
+                        messagebox.showerror(message="El campo del nombre no puede estar vacío")
+                else:
+                        if esEntero(code):
+                                Categorias.total_categorias+=[[name,code]]
+                        else:
+                                messagebox.showerror(message="El código es inválido")
+                        
+#Función que verifica si los elementos de un string son numéricos
+#E: Un string
+#S: Valor booleano True/False
+#R: debe ingresar un strings con elementos numéricos
+def esEntero(string):
+        if string=="":
+                return True
+        else:
+                if string[0].isnumeric()==True:
+                        return esEntero(string[1:])
+                else:
+                        return False
+#################################                       
+#INCLUSIÓN EL 7/1/2021
+#Modulo productos
+class Productos:
+        total_productos=[]
+        def __init__(self,nombre,codigo,codigoCategoria,cantidad):
+        if isinstance(codigo,int) and isinstance(codigoCategoria,int):
+            self.nombre=nombre
+            self.codigo=codigo
+            self.codigoCategoria=codigoCategoria
+            self.cantidad=0
+            total_produtos=[]
+        else:
+            return 'Codigo no numerico'
+            
+         #Función que crea productos
+        def crearProductos(self):
+                if self.nombre=="":
+                        messagebox.showerror(message="El campo del nombre no puede estar vacío")
+                else:
+                        if esEntero(self.codigo) and esEntero(self.codigoCategoria):
+                                total_productos+=[[self.nombre,self.codigo,self.codigoCategoria,self.cantidad]]
+                        else:
+                                messagebox.showerror(message="El código es inválido")
 
 
 #Facturacion
